@@ -32,8 +32,6 @@ pip install matplotlib
 
 ### Usage
 
-Note: `parser.py` and the downloaded fasta file must be in the same working directory
-
 #### Preparing FASTA files
 
 Using linux like terminal:
@@ -49,6 +47,23 @@ wget ftp://ftp.expasy.org/databases/uniprot/current_release/knowledgebase/refere
 ``` bash
 gunzip UP000005640_9606.fasta.gz
 ```
+#### Running the code
 
+Open `parser.py` Python file in any IDE of preference. Then run the code. (Note: `parser.py` and the downloaded fasta file must be in the same working directory, else it will raise an error -> ```FileNotFoundError```)
 
+The function `statistics` identifies each line of sequence starting with a ">" and computes the number of unique elements other than ">", header and spaces, given a FASTA file. For each line of sequence, it iterates through a for loop where for each character it checks whether the character is in the dictionary stats. If the character is not in it, it creates a key:value pair in the dictionary where the key represents the unique element and the value represents the occurance of that element. When a new key:value pair is added, the value is zero and increments to 1 considering the count. If the element already exists in the dictionary,we increment the count. The function returns this key:value count as a dictionary.
+
+```python
+def statistics(fasta_file) -> dict:
+    '''Returns the abundances in all the sequences'''
+    
+    stats = {}
+    for line in fasta_file:
+        if ">" not in line:
+            for char in line.strip("\n"):
+                if char not in stats:
+                    stats[char] = 0
+                stats [char] += 1
+    return stats
+    ```
 
