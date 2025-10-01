@@ -1,6 +1,8 @@
 import matplotlib.pyplot as plt
 
-def fasta_parser(fasta_file) -> dict:
+def statistics(fasta_file) -> dict:
+    '''Parses a FASTA file and returns the abundances in all the sequences'''
+
     stats = {}
     for line in fasta_file:
         if ">" not in line:
@@ -11,6 +13,8 @@ def fasta_parser(fasta_file) -> dict:
     return stats
 
 def graphical_statistics(my_data:dict) -> dict:
+    ''' Returns relative abundances as a bar graph'''
+    
     rf = {}
     total = sum(my_data.values())
     for k in my_data:
@@ -26,6 +30,6 @@ def graphical_statistics(my_data:dict) -> dict:
 
 fasta_file = "uniprotkb_proteome_UP000005640_2025_09_24.fasta"
 my_file = open(fasta_file).readlines()
-stats = fasta_parser(my_file)
+stats = statistics(my_file)
 rf = graphical_statistics(stats)
 print(rf)
