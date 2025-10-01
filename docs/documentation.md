@@ -1,12 +1,13 @@
-# Relative abundance of amino acids
+# Relative abundance of nucleotides amino acids
 
-## A simple project that calulates the relative abundance of Amino acids.
+## A simple project that calulates the relative abundance of Nucleotides and Amino acids.
 
 ### Overview
 
-This simple project focuses on a simple workflow to parse a FASTA file using bash and Python and compute the relative abundance of amino acids in a given amino acid sequences.
+This simple project focuses on a simple workflow to parse a FASTA file using bash and Python and compute the relative abundance of nucleotides or amino acids in a given sequence.
 
 It is used for
+* 
 * Protein sequence analysis
 * To visualise residue frequency distributions
 * Identifying different types of amino acid classification groups
@@ -51,7 +52,13 @@ gunzip UP000005640_9606.fasta.gz
 
 Open `parser.py` Python file in any IDE of preference. Then run the code. (Note: `parser.py` and the downloaded fasta file must be in the same working directory, else it will raise an error -> ```FileNotFoundError```)
 
-The function `statistics` identifies each line of sequence starting with a ">" and computes the number of unique elements other than ">", header and spaces, given a FASTA file. For each line of sequence, it iterates through a for loop where for each character it checks whether the character is in the dictionary stats. If the character is not in it, it creates a key:value pair in the dictionary where the key represents the unique element and the value represents the occurance of that element. When a new key:value pair is added, the value is zero and increments to 1 considering the count. If the element already exists in the dictionary,we increment the count. The function returns this key:value count as a dictionary.
+The code starts by importing the `matplotlib` module which is going to help us to visualise the relative abundances of the amino acids. It is imported as plt for easy use.
+
+```python
+import matplotlib.pyplot as plt
+```
+
+The function `statistics` identifies each line of sequence starting with a ">" and computes the number of unique elements other than ">", header and spaces, given a FASTA file. For each line of sequence, it iterates through a for loop where for each character it checks whether the character is in the dictionary called stats. If the character is not in it, it creates a key:value pair in the dictionary where the key represents the unique element and the value represents the occurance of that element. When a new key:value pair is added, the value is zero and increments to 1 considering the count. If the element already exists in the dictionary, we increment the count. The function returns this key:value count as a dictionary.
 
 ```python
 def statistics(fasta_file) -> dict:
@@ -65,5 +72,23 @@ def statistics(fasta_file) -> dict:
                     stats[char] = 0
                 stats [char] += 1
     return stats
-    ```
+```
+The function `graphical_statistics`
 
+``` python
+def graphical_statistics(my_data:dict) -> dict:
+     ''' Returns relative abundances as a bar graph'''
+
+    rf = {}
+    total = sum(my_data.values())
+    for k in my_data:
+        rf[k] = my_data[k]/total
+    sorted_rf = dict(sorted(rf.items()))
+    
+    x = [k for k in sorted_rf]
+    y = [v for v in sorted_rf.values()]
+    
+    plt.title('Relative abundance of residues in the Human Proteome')
+    plt.bar(x,y)
+    return plt.show()
+```
