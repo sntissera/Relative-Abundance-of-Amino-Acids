@@ -1,4 +1,4 @@
-# Relative abundance of nucleotides amino acids
+# Relative abundance of nucleotides and amino acids
 
 ## A simple project that calulates the relative abundance of Nucleotides and Amino acids.
 
@@ -7,18 +7,17 @@
 This simple project focuses on a simple workflow to parse a FASTA file using bash and Python and compute the relative abundance of nucleotides or amino acids in a given sequence.
 
 It is used for
-* 
+* nucleotide sequence analysis
 * Protein sequence analysis
 * To visualise residue frequency distributions
-* Identifying different types of amino acid classification groups
 
 ### Features
 
 * Parses FASTA files via Python.
-* Counts the number of the occurance of each amino acid in the file.
-* Calculates the relative frequencies for each amino acid in the sequence of iterest.
-* Generates a relative abundance bar graph using `matplotlib`
-* Outputs a relative density graphy sorted in alphabetical order of the amino acids
+* Counts the number of the occurance of each nucleotide/ amino acid in the file.
+* Calculates the relative frequencies for each nucleotide/ amino acid in the sequence of iterest.
+* Generates a relative abundance bar graph using `matplotlib`.
+* Outputs a relative density graphy sorted in alphabetical order of the nucleotide/ amino acids.
 
 ### Requirements
 
@@ -73,10 +72,10 @@ def statistics(fasta_file) -> dict:
                 stats [char] += 1
     return stats
 ```
-The function `graphical_statistics`
+The function `graphical_statistics` computes the relative abundances using the results we obtained from the previous function and displays the results as a bar graph. First, it obtain the abundances from the `statistics` function and calculates the relative abundance iteratively. These values are stored as a key value pair in the dictionary rf where the keys are the amino acids or nucleotides and the values are their relative abundances. Then the bar graph is plotted using `matplotlib`. Here, option is provided to enter the title for the bar graph based on the user preference.
 
 ``` python
-def graphical_statistics(my_data:dict) -> dict:
+def graphical_statistics(my_data:dict):
      ''' Returns relative abundances as a bar graph'''
 
     rf = {}
@@ -88,7 +87,10 @@ def graphical_statistics(my_data:dict) -> dict:
     x = [k for k in sorted_rf]
     y = [v for v in sorted_rf.values()]
     
-    plt.title('Relative abundance of residues in the Human Proteome')
+    plt.title(input('Enter the title: ))
     plt.bar(x,y)
     return plt.show()
 ```
+### Results
+
+Once the code is executed, the program returns a bar graph with the relative abundances of nucleotides or amino acids based on the type of FASTA file provided.
