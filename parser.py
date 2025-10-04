@@ -12,7 +12,7 @@ def statistics(fasta_file) -> dict:
                 stats [char] += 1
     return stats
 
-def graphical_statistics(my_data:dict) -> dict:
+def graphical_statistics(my_data:dict):
     ''' Returns relative abundances as a bar graph'''
     
     rf = {}
@@ -24,7 +24,7 @@ def graphical_statistics(my_data:dict) -> dict:
     x = [k for k in sorted_rf]
     y = [v for v in sorted_rf.values()]
     
-    plt.title('Relative abundance of residues in the Human Proteome')
+    plt.title(input('Enter the title: '))
     plt.bar(x,y)
     return plt.show()
 
