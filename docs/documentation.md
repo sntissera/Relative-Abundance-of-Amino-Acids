@@ -101,9 +101,10 @@ while True:
     if os.path.isfile(fasta_file):
         break  
     else:
-        print('No file is found')
+        print('File not found')
 ```
-![Alt text](images/file not found.png)
+![Logo](file_not_found.png)
+
  Then the file is opened and each line in the file is read. 
 
  ```python 
