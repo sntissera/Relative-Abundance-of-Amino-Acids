@@ -1,11 +1,11 @@
 import matplotlib.pyplot as plt
 import os
 
-def statistics(fasta_file) -> dict:
-    '''Parses a FASTA file and returns the abundances in all the sequences'''
+def statistics(file_name) -> dict:
+    '''Returns the abundances of the elements in the sequences'''
 
     stats = {}
-    for line in fasta_file:
+    for line in file_name:
         if ">" not in line:
             for char in line.strip("\n"):
                 if char not in stats:
@@ -32,13 +32,13 @@ def graphical_statistics(my_data:dict):
 #main program
 
 while True:
-    fasta_file = input('Enter file name: ')
-    if os.path.isfile(fasta_file):  
+    file_name = input('Enter the file name: ')
+    if os.path.isfile(file_name):  
         break  
     else:
         print('File not found')
 
-my_file = open(fasta_file).readlines()
+my_file = open(file_name).readlines()
 stats = statistics(my_file)
 rf = graphical_statistics(stats)
 print(rf)
