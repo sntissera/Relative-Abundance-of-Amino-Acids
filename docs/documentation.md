@@ -24,6 +24,7 @@ It is used for
 * Python 3
 * Linux like terminal to run bash codes
 * `matplotlib` library
+* `os` module
 
 Install libraries:
 ``` bash
@@ -47,55 +48,59 @@ wget ftp://ftp.expasy.org/databases/uniprot/current_release/knowledgebase/refere
 ``` bash
 gunzip UP000005640_9606.fasta.gz
 ```
+Note: Make sure to set the working directory the same as the directory `parser.py` file is stored.
+
 #### For other file types
 
 The other file types can be directly stored in the working directory that `parser.py` file is stored.
 
 #### Running the code
 
-Open `parser.py` Python file in any IDE of preference. Then run the code. (Note: `parser.py` and the downloaded fasta files must be in the same working directory, else it will raise an error -> ```FileNotFoundError```)
+Open `parser.py` Python file in any IDE of preference. Then run the code. (Note: `parser.py` and the downloaded files must be in the same working directory, else it will raise an error -> ```FileNotFoundError```)
 
-The code starts by importing the `matplotlib` module which is going to help us to visualise the relative abundances of the amino acids. It is imported as plt for easy use.
+The code starts by importing the `matplotlib.pyplot` module which is going to help us to visualise the relative abundances of the amino acids. It is imported as plt for easy use.
 
 ```python
 import matplotlib.pyplot as plt
 ```
- The main program runs first by assigning the file name to the variable `fasta_file` via a while loop. The user is allowed to enter the file name. The program provides a warning if the file is not found and allows the user to re enter the correct file name. This continues as a loop until the user enters the correct file name.
+Then `os` module is imported which will help us to check whether our files are in the directory, later in the code.
+
+```python
+import os
+```
+The main program runs first by assigning the file name to the variable `file_name` via a while loop. The user is allowed to enter the file name. The program provides a warning if the file is not found and allows the user to re enter the correct file name. This continues as a loop until the user enters the correct file name.
  
  ```python
 while True:
-    fasta_file = input('Enter file name: ')
-    if os.path.isfile(fasta_file):
+    file_name = input('Enter the file name: ')
+    if os.path.isfile(file_name):
         break  
     else:
         print('File not found')
 ```
 Example:
 
-![Logo](file_not_found.png)
+![File not found](file_not_found.png)
 
  Then the file is opened and each line in the file is read. 
 
  ```python 
- my_file = open(fasta_file).readlines()
+ my_file = open(file_name).readlines()
  ```
 
- Once done, the function `statistics` is applied to calculate the abundance and then the function `graphical_statistics` is applied to obtained the relative density graph.
-
+ Once done, the function `statistics` is applied where the input parameter is our file with the variable `file_name`. 
+ 
 ```python
 stats = statistics(my_file)
-rf = graphical_statistics(stats)
-print(rf)
 ```
-
-The function `statistics` identifies each line of sequence starting with a ">" and computes the number of unique elements other than ">", header and spaces, given a FASTA file. For each line of sequence, it iterates through a for loop where for each character it checks whether the character is in the dictionary called stats. If the character is not in it, it creates a key:value pair in the dictionary where the key represents the unique element and the value represents the occurance of that element. When a new key:value pair is added, the value is zero and increments to 1 considering the count. If the element already exists in the dictionary, we increment the count. The function returns this key:value count as a dictionary.
+This function identifies each line starting with a ">" , ignores that line and computes the number of unique elements in the lines other than lines that start with ">". It iterates through a for loop where for each character it checks whether the character is in the dictionary named stats. If the character is not in it, it creates a key:value pair in the dictionary where the key represents the unique element and the value represents the occurance of that element. When a new key:value pair is added, the value is zero and increments to 1 considering it as a count. If the element already exists in the dictionary, we increment the count. The function returns this key:value count as a dictionary.
 
 ```python
-def statistics(fasta_file) -> dict:
-    '''Returns the abundances in all the sequences'''
+def statistics(file_name) -> dict:
+    '''Returns the abundances of the elements in the sequences'''
     
     stats = {}
-    for line in fasta_file:
+    for line in file_name:
         if ">" not in line:
             for char in line.strip("\n"):
                 if char not in stats:
@@ -103,7 +108,16 @@ def statistics(fasta_file) -> dict:
                 stats [char] += 1
     return stats
 ```
-The function `graphical_statistics` computes the relative abundances using the results we obtained from the previous function and displays the results as a bar graph. First, it obtain the abundances from the `statistics` function and calculates the relative abundance iteratively. These values are stored as a key value pair in the dictionary rf where the keys are the amino acids or nucleotides and the values are their relative abundances. Then the bar graph is plotted using `matplotlib`. Here, option is provided to enter the title for the bar graph based on the user preference.
+
+Then the function `graphical_statistics` is applied. The input variable is the dictionary with abundances that was returned from the previous function. These are stored in the variable `stats`. 
+
+```python
+rf = graphical_statistics(stats)
+```
+
+The function `graphical_statistics` computes the relative abundances using the results we obtained from the previous function and displays the results as a bar graph. First, it obtains the abundances from the `statistics` function and calculates the relative abundance iteratively. These values are stored as a key value pair in the dictionary rf where the keys are the amino acids or nucleotides and the values are their relative abundances. Then the bar graph is plotted using `matplotlib.pyplot`. 
+
+The x-axis represents the nucleotides/ amino acids and the y-axis represents the relarive frequencies. Here, an option is provided to enter the title for the bar graph based on the users needs.
 
 ``` python
 def graphical_statistics(my_data:dict):
@@ -122,10 +136,21 @@ def graphical_statistics(my_data:dict):
     plt.bar(x,y)
     return plt.show()
 ```
- 
+Example: 
+
+![Title](title.png)
 
 ### Results
+Results are shown after executing the following code.
 
-Once the code is executed, the program returns a bar graph with the relative abundances of nucleotides or amino acids based on the type of FASTA file provided.
+``` python
+print(rf)
+```
 
-Reminder: And example and test files
+The program returns a bar graph with the relative abundances of nucleotides or amino acids based on the type of file provided.
+
+![Results]](results.png)
+
+### Conclusions
+
+Using this simple program we can get a look at the statistics of any file provided with a sequence.
