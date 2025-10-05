@@ -29,12 +29,15 @@ def graphical_statistics(my_data:dict):
     plt.bar(x,y)
     return plt.show()
 
+#main program
+
 while True:
     fasta_file = input('Enter file name: ')
-    if os.path.isfile(fasta_file):
+    if os.path.isfile(fasta_file):  
         break  
     else:
         print('File not found')
+
 my_file = open(fasta_file).readlines()
 stats = statistics(my_file)
 rf = graphical_statistics(stats)

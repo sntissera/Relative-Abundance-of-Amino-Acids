@@ -13,17 +13,17 @@ It is used for
 
 ### Features
 
-* Parses FASTA files via Python.
+* Parses FASTA or any other type of files via Python.
 * Counts the number of the occurance of each nucleotide/ amino acid in the file.
 * Calculates the relative frequencies for each nucleotide/ amino acid in the sequence of iterest.
 * Generates a relative abundance bar graph using `matplotlib`.
-* Outputs a relative density graphy sorted in alphabetical order of the nucleotide/ amino acids.
+* Outputs a relative density graph sorted in alphabetical order of the nucleotide/ amino acids.
 
 ### Requirements
 
 * Python 3
 * Linux like terminal to run bash codes
-* `matplotlib`
+* `matplotlib` library
 
 Install libraries:
 ``` bash
@@ -47,14 +47,45 @@ wget ftp://ftp.expasy.org/databases/uniprot/current_release/knowledgebase/refere
 ``` bash
 gunzip UP000005640_9606.fasta.gz
 ```
+#### For other file types
+
+The other file types can be directly stored in the working directory that `parser.py` file is stored.
+
 #### Running the code
 
-Open `parser.py` Python file in any IDE of preference. Then run the code. (Note: `parser.py` and the downloaded fasta file must be in the same working directory, else it will raise an error -> ```FileNotFoundError```)
+Open `parser.py` Python file in any IDE of preference. Then run the code. (Note: `parser.py` and the downloaded fasta files must be in the same working directory, else it will raise an error -> ```FileNotFoundError```)
 
 The code starts by importing the `matplotlib` module which is going to help us to visualise the relative abundances of the amino acids. It is imported as plt for easy use.
 
 ```python
 import matplotlib.pyplot as plt
+```
+ The main program runs first by assigning the file name to the variable `fasta_file` via a while loop. The user is allowed to enter the file name. The program provides a warning if the file is not found and allows the user to re enter the correct file name. This continues as a loop until the user enters the correct file name.
+ 
+ ```python
+while True:
+    fasta_file = input('Enter file name: ')
+    if os.path.isfile(fasta_file):
+        break  
+    else:
+        print('File not found')
+```
+Example:
+
+![Logo](file_not_found.png)
+
+ Then the file is opened and each line in the file is read. 
+
+ ```python 
+ my_file = open(fasta_file).readlines()
+ ```
+
+ Once done, the function `statistics` is applied to calculate the abundance and then the function `graphical_statistics` is applied to obtained the relative density graph.
+
+```python
+stats = statistics(my_file)
+rf = graphical_statistics(stats)
+print(rf)
 ```
 
 The function `statistics` identifies each line of sequence starting with a ">" and computes the number of unique elements other than ">", header and spaces, given a FASTA file. For each line of sequence, it iterates through a for loop where for each character it checks whether the character is in the dictionary called stats. If the character is not in it, it creates a key:value pair in the dictionary where the key represents the unique element and the value represents the occurance of that element. When a new key:value pair is added, the value is zero and increments to 1 considering the count. If the element already exists in the dictionary, we increment the count. The function returns this key:value count as a dictionary.
@@ -91,33 +122,8 @@ def graphical_statistics(my_data:dict):
     plt.bar(x,y)
     return plt.show()
 ```
-#### Main Program
  
- The main program runs first by assigning the file name to the variable `fasta_file` via a while loop. The user is allowed to enter the file name. The program provides a warning if the file is not found and allows the user to re enter the correct file name. This continues as a loop until the user enters the correct file name.
- 
- ```python
-while True:
-    fasta_file = input('Enter file name: ')
-    if os.path.isfile(fasta_file):
-        break  
-    else:
-        print('File not found')
-```
-![Logo](file_not_found.png)
 
- Then the file is opened and each line in the file is read. 
-
- ```python 
- my_file = open(fasta_file).readlines()
- ```
-
- Once done, the function `statistics` is applied to calculate the abundance and then the function `graphical_statistics` is applied to obtained the relative density graph.
-
-```python
-stats = statistics(my_file)
-rf = graphical_statistics(stats)
-print(rf)
-```
 ### Results
 
 Once the code is executed, the program returns a bar graph with the relative abundances of nucleotides or amino acids based on the type of FASTA file provided.
