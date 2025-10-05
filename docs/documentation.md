@@ -149,7 +149,7 @@ print(rf)
 
 The program returns a bar graph with the relative abundances of nucleotides or amino acids based on the type of file provided.
 
-![Results]](results.png)
+![Results](results.png)
 
 ### Conclusions
 
