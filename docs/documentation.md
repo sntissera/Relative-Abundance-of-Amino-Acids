@@ -103,7 +103,7 @@ while True:
     else:
         print('No file is found')
 ```
-![Alt text]("file not found.png")
+![Alt text](file not found.png)
  Then the file is opened and each line in the file is read. 
 
  ```python 
