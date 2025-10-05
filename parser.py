@@ -1,4 +1,5 @@
 import matplotlib.pyplot as plt
+import os
 
 def statistics(fasta_file) -> dict:
     '''Parses a FASTA file and returns the abundances in all the sequences'''
@@ -28,7 +29,12 @@ def graphical_statistics(my_data:dict):
     plt.bar(x,y)
     return plt.show()
 
-fasta_file = "uniprotkb_proteome_UP000005640_2025_09_24.fasta"
+while True:
+    fasta_file = input('Enter file name: ')
+    if os.path.isfile(fasta_file):
+        break  
+    else:
+        print('No file is found')
 my_file = open(fasta_file).readlines()
 stats = statistics(my_file)
 rf = graphical_statistics(stats)

@@ -91,6 +91,34 @@ def graphical_statistics(my_data:dict):
     plt.bar(x,y)
     return plt.show()
 ```
+#### Main Program
+ 
+ The main program runs first by assigning the file name to the variable `fasta_file` via a while loop. The user is allowed to enter the file name. The program provides a warning if the file is not found and allows the user to re enter the correct file name. This continues as a loop until the user enters the correct file name.
+ 
+ ```python
+while True:
+    fasta_file = input('Enter file name: ')
+    if os.path.isfile(fasta_file):
+        break  
+    else:
+        print('No file is found')
+```
+![Alt text]("C:\Users\sntis\Documents\Projects\Uni\AY 25-26\PIBN\RA\images\file not found.png")
+ Then the file is opened and each line in the file is read. 
+
+ ```python 
+ my_file = open(fasta_file).readlines()
+ ```
+
+ Once done, the function `statistics` is applied to calculate the abundance and then the function `graphical_statistics` is applied to obtained the relative density graph.
+
+```python
+stats = statistics(my_file)
+rf = graphical_statistics(stats)
+print(rf)
+```
 ### Results
 
 Once the code is executed, the program returns a bar graph with the relative abundances of nucleotides or amino acids based on the type of FASTA file provided.
+
+Reminder: And example and test files
