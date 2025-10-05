@@ -34,7 +34,7 @@ while True:
     if os.path.isfile(fasta_file):
         break  
     else:
-        print('No file is found')
+        print('File not found')
 my_file = open(fasta_file).readlines()
 stats = statistics(my_file)
 rf = graphical_statistics(stats)
